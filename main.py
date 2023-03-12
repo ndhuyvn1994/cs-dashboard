@@ -16,3 +16,7 @@ def mainpage():
     sv_status = 'CLOSED' if len(opening_cs.stdout) == 0 else 'ACTIVE'
 
     return render_template('main.html', sv_status=sv_status)
+
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=30000, debug=True)
