@@ -1,3 +1,31 @@
-body {
+.body-class {
   background: black;
+  padding: 40px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.cell {
+  border-color: grey;
+  border-width: 1px;
+  border-style: solid;
+  padding: 5px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row-1 {
+  flex-direction: column;
+  width: 100%;
+}
+
+.col-1-1 {
+  width: 30%;
 }
