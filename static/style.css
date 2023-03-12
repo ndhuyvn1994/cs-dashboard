@@ -5,9 +5,7 @@
 
 .container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .cell {
@@ -19,13 +17,34 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 20px;
 }
 
-.row-1 {
-  flex-direction: column;
-  width: 100%;
+.server-status-close {
+  color: red;
 }
 
-.col-1-1 {
-  width: 30%;
+.server-status-open {
+  color: green;
+}
+
+.row {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-around; */
+}
+
+.col {
+  margin-bottom: 10px;
+}
+
+@media(max-width: 800px) {
+  .row {
+    flex-direction: column;
+  }
+}
+
+.col-server-status {
+  min-width: 300px;
 }

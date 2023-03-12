@@ -3,29 +3,23 @@
 
 <head>
 
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
-  <title> VSA@NYCU Đại Chiến 2023</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <title> VSA@NYCU Đại Chiến 2023</title>
 </head>
 
 <body class="body-class">
-  <div class="container">
-    <div class="row-1">
-      <div class="col-1-1 cell">
-        {% if sv_status == 'ACTIVE' %}
-        <h3 class="text-success">Server: {{sv_status}}</h3>
-        {% else %}
-        <h3 class="text-danger">Server: {{sv_status}}</h3>
-        {% endif %}
-      </div>
-      <div class="col-1-2">
-        Empty
-      </div>
+    <div class="container">
+        <div class="row">
+            <div class="col col-server-status cell">
+                {% if sv_status == 'ACTIVE' %}
+                <h3 class="server-status-open">Server: {{sv_status}}</h3>
+                {% else %}
+                <h3 class="server-status-close">Server: {{sv_status}}</h3>
+                {% endif %}
+            </div>
+        </div>
     </div>
-  </div>
 </body>
