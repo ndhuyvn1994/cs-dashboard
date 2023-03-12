@@ -1,6 +1,7 @@
 .body-class {
   background: black;
   padding: 40px;
+  color: white;
 }
 
 .container {
@@ -46,4 +47,6 @@
 
 .col-server-status {
   min-width: 300px;
+  display: flex;
+  flex-direction: column;
 }

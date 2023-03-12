@@ -16,7 +16,7 @@
             <div class="col col-server-status cell">
                 {% if sv_status == 'ACTIVE' %}
                 <h3 class="server-status-open">Server: {{sv_status}}</h3>
-                <h4>140.113.128.152:{{port}}</h4>
+                <p>140.113.128.152{{port}}</p>
                 {% else %}
                 <h3 class="server-status-close">Server: {{sv_status}}</h3>
                 {% endif %}
