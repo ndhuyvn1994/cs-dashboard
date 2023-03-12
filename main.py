@@ -13,7 +13,7 @@ app.wsgi_app = ProxyFix(
 @app.route("/")
 def mainpage():
     opening_cs = subprocess.run(
-        ['lsof', '-i', ':27015'],
+        ['lsof', '-i', ':27016'],
         stdout=subprocess.PIPE,
     )
     sv_status = 'CLOSED' if len(opening_cs.stdout) == 0 else 'ACTIVE'
