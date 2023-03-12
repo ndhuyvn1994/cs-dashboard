@@ -12,13 +12,15 @@ app.wsgi_app = ProxyFix(
 
 @app.route("/")
 def mainpage():
-    opening_cs = subprocess.run(
-        ['lsof', '-i', ':27016'],
-        stdout=subprocess.PIPE,
-    )
-    sv_status = 'CLOSED' if len(opening_cs.stdout) == 0 else 'ACTIVE'
+    ports = [':27015', ':27016', ':27017', ':27018', ':27019']
+    for p in ports:
+        opening_cs = subprocess.run(['lsof', '-i', p], stdout=subprocess.PIPE)
+        sv_status = 'CLOSED' if len(opening_cs.stdout) == 0 else 'ACTIVE'
 
-    return render_template('main.html', sv_status=sv_status)
+        if sv_status == 'ACTIVE':
+            break
+
+    return render_template('main.html', sv_status=sv_status, port=p)
 
 
 if __name__ == '__main__':
