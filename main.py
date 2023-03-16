@@ -1,13 +1,18 @@
 import subprocess
+import redis
 
+from constant import *
 from flask import Flask, render_template
 from werkzeug.middleware.proxy_fix import ProxyFix
+
+from constant import RD_ONLINE_KEY
 
 app = Flask(__name__)
 
 app.wsgi_app = ProxyFix(
     app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
 )
+rd = redis.Redis(decode_responses=True)
 
 def get_server_status():
     ports = [':27015', ':27016', ':27017', ':27018', ':27019']
@@ -19,6 +24,9 @@ def get_server_status():
             return sv_status, p
 
     return None, None
+
+def get_online_players():
+    return list(rd.smembers(RD_ONLINE_KEY))
 
 @app.route("/")
 def mainpage():

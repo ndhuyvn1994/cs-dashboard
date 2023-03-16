@@ -7,6 +7,8 @@ import re
 import redis
 import socket
 
+from constant import *
+
 rd = redis.Redis(decode_responses=True)
 
 # event_name, regex, extract_field_name, key_index, value_index, custom_value
@@ -60,7 +62,15 @@ def parse(data):
         update_dict.update(custom_values)
 
         print(update_dict)
-        rd.hset(f"{match[0][key_id]}", mapping=update_dict)
+        key = f"{match[0][key_id]}"
+        rd.hset(key, mapping=update_dict)
+
+        # keep track of online players
+        if event_name == "player_connected":
+            rd.sadd(RD_ONLINE_KEY, key)
+        if event_name == "player_disconnected":
+            rd.srem(RD_ONLINE_KEY, key)
+
         return
 
 

@@ -22,5 +22,13 @@
                 {% endif %}
             </div>
         </div>
+        <div class="row">
+            <span>Online</span>
+            <ul>
+                {% for player in player_info %}
+                <li>{{ player.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 </body>
