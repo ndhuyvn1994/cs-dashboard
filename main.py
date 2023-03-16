@@ -1,4 +1,5 @@
 import subprocess
+import util
 
 from flask import Flask, render_template
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -9,18 +10,27 @@ app.wsgi_app = ProxyFix(
     app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
 )
 
-
-@app.route("/")
-def mainpage():
+def get_server_status():
     ports = [':27015', ':27016', ':27017', ':27018', ':27019']
     for p in ports:
         opening_cs = subprocess.run(['lsof', '-i', p], stdout=subprocess.PIPE)
         sv_status = 'CLOSED' if len(opening_cs.stdout) == 0 else 'ACTIVE'
 
         if sv_status == 'ACTIVE':
-            break
+            return sv_status, p
 
-    return render_template('main.html', sv_status=sv_status, port=p)
+    return None, None
+
+@app.route("/")
+def mainpage():
+    status, port = get_server_status()
+    player_infos = util.get_player_info()
+
+    return render_template('main.html',
+        sv_status=status,
+        port=port,
+        player_infos=player_infos
+    )
 
 
 if __name__ == '__main__':
