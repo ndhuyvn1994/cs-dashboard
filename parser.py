@@ -15,7 +15,7 @@ PARSERS = [
     (
         "player_connected", r'"(.+)<.+><.+><>" connected, address "(.+):(.+)"',
         0,
-        {'name': 0, 'ip': 1, 'port': 2},
+        {'ip': 1, 'port': 2},
         {'online': 1, 'is_join_game': 0}
     ),
 
@@ -60,7 +60,7 @@ def parse(data):
         update_dict.update(custom_values)
 
         print(update_dict)
-        rd.hset(f"{match[key_id]}", mapping=update_dict)
+        rd.hset(f"{match[0][key_id]}", mapping=update_dict)
         return
 
 
