@@ -31,12 +31,11 @@ def get_online_players():
 @app.route("/")
 def mainpage():
     status, port = get_server_status()
-    player_infos = {}
 
     return render_template('main.html',
         sv_status=status,
         port=port,
-        player_infos=player_infos
+        player_infos=get_online_players()
     )
 
 
