@@ -1,5 +1,4 @@
 import subprocess
-import util
 
 from flask import Flask, render_template
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -24,7 +23,7 @@ def get_server_status():
 @app.route("/")
 def mainpage():
     status, port = get_server_status()
-    player_infos = util.get_player_info()
+    player_infos = {}
 
     return render_template('main.html',
         sv_status=status,
