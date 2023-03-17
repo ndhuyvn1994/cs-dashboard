@@ -74,6 +74,8 @@ def parse(data):
             rd.sadd(RD_ONLINE_KEY, player_key)
         if event_name == "player_disconnected":
             rd.srem(RD_ONLINE_KEY, player_key)
+        else:
+            rd.sadd(RD_ONLINE_KEY, player_key)
 
         return
 

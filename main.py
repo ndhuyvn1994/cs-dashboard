@@ -26,6 +26,7 @@ def get_server_status():
     return None, None
 
 def get_online_players():
+    print(rd.smembers(RD_ONLINE_KEY))
     return list(rd.smembers(RD_ONLINE_KEY))
 
 @app.route("/")
