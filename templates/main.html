@@ -1,34 +1,191 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-
 <head>
-
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>VSA@NYCU Đại Chiến 2023</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Custom CSS -->
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
-    <title> VSA@NYCU Đại Chiến 2023</title>
 </head>
-
-<body class="body-class">
-    <div class="container">
-        <div class="row">
-            <div class="col col-server-status cell">
-                {% if sv_status == 'ACTIVE' %}
-                <h3 class="server-status-open">Server: {{sv_status}}</h3>
-                <span>140.113.128.152{{port}}</span>
-                {% else %}
-                <h3 class="server-status-close">Server: {{sv_status}}</h3>
-                {% endif %}
+<body class="bg-dark">
+    <header class="container-fluid px-0 bg-dark">
+        <div class="container">
+            <div class="row align-items-center py-3">
+                <div class="col-12 col-md-6">
+                    <img src="https://icon-library.com/images/counter-strike-icon/counter-strike-icon-15.jpg" alt="Counter Strike Icon" class="img-fluid" width="80">
+                </div>
+                <div class="col-12 col-md-6 text-center text-md-right text-white">
+                    <h1 class="h4 mb-0">VSA@NYCU Đại Chiến 2023</h1>
+                </div>
             </div>
         </div>
+    </header>
+    <main class="container my-5">
         <div class="row">
-            <span>Online</span>
-            <ul>
-                {% for player in player_infos %}
-                <li>{{ player }}</a></li>
-                {% endfor %}
-            </ul>
+                <div class="col-12 col-md-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-dark text-white text-center">
+                            Online Players
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                {% for player in online_players %}
+                                <li class="list-group-item">{{ player }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="card h-100">
+                        <div class="card-header bg-dark text-white text-center">
+                            Player Rankings
+                        </div>
+                        <div class="card-body">
+                            <ol class="list-group">
+                                {% for player in player_rankings %}
+                                <li class="list-group-item">{{ player }}</li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header bg-dark text-white text-center">
+                        Scoreboard
+                    </div>
+                    <table class="table table-dark table-striped table-bordered mb-0">
+                        <thead>
+                            <tr>
+                                <th>Player Name</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Player 1</td>
+                                <td>1000</td>
+                            </tr>
+                            <tr>
+                                <td>Player 2</td>
+                                <td>900</td>
+                            </tr>
+                            <tr>
+                                <td>Player 3</td>
+                                <td>800</td>
+                            </tr>
+                            <tr>
+                                <td>Player 4</td>
+                                <td>700</td>
+                            </tr>
+                            <tr>
+                                <td>Player 5</td>
+                                <td>600</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <table class="table table-striped table-bordered">
+                    <div class="card-header bg-dark text-white text-center">
+                        History Matches
+                    </div>
+                    <thead>
+                        <tr>
+                            <th colspan="5" style="text-align: center">{{ table_name }}</th>
+                        </tr>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Kills</th>
+                            <th>Deaths</th>
+                            <th>K/D Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in player_infos %}
+                        <tr>
+                            <td>{{ player.rank }}</td>
+                            <td>{{ player.name }}</td>
+                            <td>{{ player.kills }}</td>
+                            <td>{{ player.deaths }}</td>
+                            <td>{{ player.kd_ratio }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+            <div class="col-12 col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-dark text-white text-center">
+                        Achievement Summary
+                    </div>
+                    <div class="card-body">
+                        <canvas id="achievement-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    <script>
+        var ctx = document.getElementById('achievement-chart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    {% for player in player_achievements %}
+                        "{{ player.name }}",
+                    {% endfor %}
+                ],
+                datasets: [{
+                    label: 'Total Achievements',
+                    data: [
+                        {% for player in player_achievements %}
+                            {{ player.achievements }},
+                        {% endfor %}
+                    ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
 </body>
+</html>
